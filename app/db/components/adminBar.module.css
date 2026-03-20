@@ -1,0 +1,31 @@
+.navbar{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.stripe{
+    position: relative;
+    margin-top: auto;
+    background-color: #020b22;
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    align-items: center;
+    justify-content: right;
+    border: grey;
+}
+
+.home, .log-out, .log-in{
+    margin-right: 50px;
+    background: 0;
+    border: 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #bab1e1;
+}
+
+.home:hover, .log-out:hover{
+    text-decoration: underline;
+}

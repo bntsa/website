@@ -1,0 +1,138 @@
+.input-comp{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.input-comp > div{
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.input-comp > div > input{
+    width: 300px;
+    margin-left: 30px;
+    right: 0;
+    margin-bottom: 5px;
+    margin-top: 5px;
+
+    color: #d6d6ea;
+    border-color: #636367;
+    border-width: 2px;
+    padding-left: 30px;
+    max-width: 800px;
+    background-color: #2c2d37;
+    border-radius: 6px;
+    border-style: solid;
+    font-weight: 500;
+    outline: none;
+    font-size: 14px;
+}
+
+.input-comp > div > label{
+    align-content: center;
+}
+
+.load{
+    margin-bottom: 100px;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    justify-content: center;
+    margin-top: 10%;
+    align-items: anchor-center;
+}
+
+.login-form > input{
+
+    flex: 1;
+    color: #d6d6ea;
+    border-color: #636367;
+    border-width: 2px;
+    padding-left: 30px;
+    margin-bottom: 20px;
+    width: 300px;
+    background-color: #2c2d37;
+    border-radius: 6px;
+    border-style: solid;
+    font-weight: 500;
+    outline: none;
+    font-size: 14px;
+}
+
+.login-form > button{
+    flex: 1;
+    color: #d6d6ea;
+    border-color: #636367;
+    border-width: 2px;
+    width: 335px;
+    background-color: #2c2d37;
+    border-radius: 6px;
+    border-style: solid;
+    font-weight: 500;
+    outline: none;
+    font-size: 14px;
+}
+
+.selector{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.add-table {
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.add-comp{
+    margin: 30px;
+    height: 300px;
+    width: 300px;
+    color: #9f9fa9;
+    background-color: #2c2d37;
+    border-radius: 16px;
+    border-width: 4px;
+    border-color: #636367;
+    font-weight: 500;
+    cursor: pointer;
+    border-style: solid;
+    font-size: 28px;
+    align-content: center;
+}
+
+.add-comp:hover{
+    background-color: #383947;
+    color: #d6d6ea;
+}
+
+
+.add-file{
+    width: 300px;
+    height: 30px;
+    font-size: 18px;
+}
+
+.popup-succ, .popup-fail{
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.popup-succ{
+    background-color: green;
+}
+
+.popup-fail{
+    background-color: red;
+}

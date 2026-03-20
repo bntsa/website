@@ -1,0 +1,48 @@
+.profile-name{
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.table-container{
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.result-table, .profile-table{
+    min-width: 400px;
+    border: 1px solid white;
+    align-content: center;
+}
+
+.result-table{
+    width: 40%;
+}
+
+
+.competition-th{
+    height: 50px;
+}
+
+.competition-td {
+    border-top: 1px solid white;
+    border-collapse: collapse;
+    height: 35px;
+    padding-left: 10px;
+}
+
+.competition-link {
+    color: white;
+    text-decoration: none;
+}
+
+.competition-link:hover {
+    text-decoration: underline;
+
+}
+
+.profile-link{
+    color: white;
+}

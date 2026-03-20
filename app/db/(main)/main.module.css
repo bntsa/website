@@ -1,0 +1,12 @@
+.middle-text{
+    display: flex;
+    justify-content: center;
+    margin-top: 350px;
+}
+
+.middle-search{
+    /*position: fixed;*/
+    margin-top: 50px;
+    /*top: 45%;*/
+    width: 100%;
+}
