@@ -1,6 +1,6 @@
 import supabase from "@/app/db/lib/supabaseClient";
 import supabaseClient from "@/app/db/lib/supabaseClient";
-import {getHeaders, getRows} from "@/app/db/components/Load";
+import {getHeaders, getok, getRows} from "@/app/db/components/Load";
 
 let names: string[][] = []
 let namesToAdd: Object[] = []
@@ -22,6 +22,8 @@ export async function addContest(name: string, subject: string, year: number, mo
             }
         }else cols.push(h)
     })
+
+    if(!getok()) await Promise.reject("Inconsistent row length")
 
     const { data, error } = await supabase
         .from('comps')

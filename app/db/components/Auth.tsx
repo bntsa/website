@@ -142,6 +142,7 @@ export const Auth = () => {
                     </form>
                     {popup == 1 && (<div className={styles['popup-succ']}>Successfully added competition!</div>)}
                     {popup == 0 && (<div className={styles['popup-fail']}>Competition upload unsuccessful</div>)}
+                    <p id="warning" className={styles['warning']}></p>
                     <table id="table"></table>
 
                 </div>
@@ -149,8 +150,6 @@ export const Auth = () => {
                 <div className={styles['load']}>
                     <Load/>
                 </div>
-
-
             </div>
 
         )

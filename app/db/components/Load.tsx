@@ -1,5 +1,6 @@
 var rows: any[]
 var headers: string[]
+var ok: boolean
 
 export const getRows = () => {
     return rows;
@@ -7,6 +8,10 @@ export const getRows = () => {
 
 export const getHeaders = () => {
     return headers;
+}
+
+export const getok = () => {
+    return ok;
 }
 
 export const Load = () => {
@@ -32,6 +37,20 @@ export const Load = () => {
             parseCSV(i.files[0]);
         }
     });
+
+    const csvStringToArray = (data: any) => {
+        const re = /(,|\r?\n|\r|^)(?:"([^"]*(?:""[^"]*)*)"|([^,\r\n]*))/gi
+        const result: string[][] = [[]]
+        let matches
+        while ((matches = re.exec(","+data))) {
+            //console.log("matches", matches)
+            if (matches[1].length && matches[1] !== ',') result.push([])
+            result[result.length - 1].push(
+                matches[2] !== undefined ? matches[2].replace(/""/g, '"') : matches[3]
+            )
+        }
+        return result[0]
+    }
 
 
     function parseCSV(file: any) {
@@ -104,6 +123,32 @@ export const Load = () => {
         rows = text.split(NEWLINE);
         headers = rows.shift().trim().split(DELIMITER);
         var htr = document.createElement('tr');
+        ok=true
+
+        rows.forEach(function (r: any) {
+            r = r.trim();
+
+            if (!r) {
+                return;
+            }
+
+            //var cols = r.split(DELIMITER);
+            var cols: string[] = csvStringToArray(r)
+
+            if (cols.length === 0) {
+                return;
+            }
+
+            if (cols.length != headers.length) {
+                ok = false
+            }
+        })
+        var warning = document.getElementById('warning');
+        if(!ok){
+            if(warning) warning.textContent = "Warning: the row length is inconsistent"
+        }else{
+            if(warning) warning.textContent = ""
+        }
 
         headers.forEach(function (h: any) {
             var th = document.createElement('th');
@@ -124,6 +169,9 @@ export const Load = () => {
 
         var rtr: any;
 
+
+
+
         rows.forEach(function (r: any) {
             r = r.trim();
 
@@ -131,7 +179,8 @@ export const Load = () => {
                 return;
             }
 
-            var cols = r.split(DELIMITER);
+            //var cols = r.split(DELIMITER);
+            var cols: string[] = csvStringToArray(r)
 
             if (cols.length === 0) {
                 return;

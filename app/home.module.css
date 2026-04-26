@@ -1,0 +1,48 @@
+.placeholder{
+    font-size: 18px;
+    margin: 30px;
+}
+
+.project-container{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    justify-content: left;
+    margin: 30px;
+}
+
+.project-button{
+    display: block;
+    flex-direction: column;
+    height: 100px;
+    margin: 30px;
+
+}
+
+.project-button{
+    text-align: left;
+    color: #d6d6ea;
+    border-color: #6a6a77;
+    border-width: 3px;
+    padding-left: 10px;
+    max-width: 600px;
+    background-color: #2c2d37;
+    border-style: solid;
+    font-weight: 500;
+    outline: none;
+    font-size: 14px;
+}
+
+.project-button:hover{
+    cursor: pointer;
+    background-color: #383947;
+}
+
+.title{
+    margin: 10px;
+}
+
+.link{
+    color: white;
+    text-decoration: none;
+}

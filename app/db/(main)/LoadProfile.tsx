@@ -3,102 +3,126 @@
 import supabase from "@/app/db/lib/supabaseClient";
 import {useEffect, useState} from "react";
 import styles from "@/app/db/(main)/profile.module.css"
+import {formatName} from "@/app/db/(admin)/admin/add/AddTable";
 
 const LoadProfile = ({props}: { props: string[] }) => {
     const [fetchError, setFetchError] = useState<any | null>(null)
     const [profiles, setProfiles] = useState<any[] | null>([])
+    const [profile, setProfile] = useState<any | null>(null)
     const [results, setResults] = useState<any[] | null>(null)
-    const [profileCount, setProfileCount] = useState<any | null>(null)
+    const [profileCount, setProfileCount] = useState<number | null>(null)
+
+
+    const fetchProfile = async () => {
+        console.log("PROPS", props)
+        const {data, error} = await supabase
+            .from('profiles')
+            .select()
+            .contains('keywords', props)
+
+        if (error) {
+            console.log("Error check", error)
+            setFetchError('Could not fetch the profile')
+            setProfiles(null)
+            console.log(error)
+        }
+
+        if (data) {
+            console.log("DATA", data)
+            setProfiles(data)
+            setFetchError(null)
+        } else {
+            setFetchError('No profile found')
+            setProfiles(null)
+            console.log(error)
+        }
+
+        return data
+    }
+
+    const fetchResults = async (id_profile: any) => {
+        const {data, error} = await supabase
+            .from('results')
+            .select(
+                `
+                rank,
+                award,
+                id_comp,
+                comps (name, grade, year, link)
+                `
+            )
+            .eq('id_profile', id_profile)
+            .order('comps(year)', {ascending: false})
+
+        if (error) {
+            setFetchError('Could not fetch any competitions')
+            setResults(null)
+            console.log(error)
+        }
+
+        if (data) {
+            console.log("got data", data)
+            setResults(data)
+            setFetchError(null)
+        }
+
+        console.log("Data", data)
+        return data
+    }
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            console.log("PROPS", props)
-            const {data, error} = await supabase
-                .from('profiles')
-                .select()
-                .contains('keywords', props)
-
-            if (error) {
-                console.log("Error check", error)
-                setFetchError('Could not fetch the profile')
-                setProfiles(null)
-                console.log(error)
-            }
-
-            if (data) {
-                console.log("DATA", data)
-                setProfiles(data)
-                setFetchError(null)
-            } else {
-                setFetchError('No profile found')
-                setProfiles(null)
-                console.log(error)
-            }
-
-            return data
-        }
-
-        const fetchResults = async (id_profile: any) => {
-            const {data, error} = await supabase
-                .from('results')
-                .select(
-                    `
-                    rank,
-                    award,
-                    id_comp,
-                    comps (name, grade, year, link)
-                    `
-                )
-                .eq('id_profile', id_profile)
-                .order('comps(year)', {ascending: false})
-
-            if (error) {
-                setFetchError('Could not fetch any competitions')
-                setResults(null)
-                console.log(error)
-            }
-
-            if (data) {
-                console.log("got data", data)
-                setResults(data)
-                setFetchError(null)
-            }
-
-            console.log("Data", data)
-            return data
-        }
-
         fetchProfile().then((p) => {
-            setProfileCount(p?.length)
-            console.log("plength", p)
+            console.log("P_length", p?.length)
+            if(p) {
+                console.log("We are setting profile count to ", p.length)
+                if(p.length == 1) setProfile(p[0])
+                setProfileCount(p.length)
+            }
 
-            if (p?.length == 1) fetchResults(p[0].id_profile).then((res) => {
-                function sort_by_key(array: any[] | null, key: any)
-                {
-                    if(!array) return null;
-                    return array.sort(function(a, b)
-                    {
-                        var x = a.comps[key]; var y = b.comps[key];
-                        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-                    });
-                }
 
-                setResults(sort_by_key(res, "year"))
-            })
         }).catch((err) => {
             console.log("error", err)
 
         })
-
-        console.log("t2")
-
     }, []);
 
+    useEffect(() => {
+        if(profileCount && profiles){
+            console.log("plength", profileCount)
+            if(profileCount > 1) {
+                setProfile(profiles[0])
+                profiles.forEach(p => {
+                    if(JSON.stringify(formatName(p.name).split(" ")) == JSON.stringify(props)){
+                        setProfile(p)
+                        setProfileCount(1)
+                    }
+                })
+            }
+
+            if(profileCount == 1){
+                fetchResults(profile.id_profile).then((res) => {
+                    function sort_by_key(array: any[] | null, key: any) {
+                        if (!array) return null;
+                        return array.sort(function (a, b) {
+                            var x = a.comps[key];
+                            var y = b.comps[key];
+                            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                        });
+                    }
+
+                    setResults(sort_by_key(res, "year"))
+                })
+            }
+
+        }
+
+    }, [profileCount]);
+
     if (profiles) {
-        if (profileCount == 1 && profiles[0].id_profile) {
+        if (profileCount == 1 && profile) {
             return (
                 <div>
-                    <h1 className={styles['profile-name']}>{profiles[0].name}</h1>
+                    <h1 className={styles['profile-name']}>{profile.name}</h1>
                     <div>
                         {fetchError && (<p>{fetchError}</p>)}
                         {results && (
@@ -135,7 +159,7 @@ const LoadProfile = ({props}: { props: string[] }) => {
                 </div>
             )
         }
-        if (profileCount && profileCount > 1) {
+        if (profileCount && profile && profileCount > 1) {
             return (
                 <div>
                     <h2 className={styles['profile-name']}>Multiple profiles found</h2>
@@ -148,10 +172,10 @@ const LoadProfile = ({props}: { props: string[] }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                            {profiles.map(profile => (
-                                <tr key={profile.name}>
+                            {profiles.map(prof => (
+                                <tr key={prof.name}>
                                     <td className={styles['competition-td']}>
-                                        <a href={'/db/profile/'+profile.name} className={styles['profile-link']}>{profile.name}</a></td>
+                                        <a href={'/db/profile/'+prof.name} className={styles['profile-link']}>{prof.name}</a></td>
                                 </tr>
                             ))}
                             </tbody>
@@ -165,12 +189,11 @@ const LoadProfile = ({props}: { props: string[] }) => {
         if(profileCount==0){
             return (
                 <div>
-                    <p>Unable to fetch profile</p>
+                    <p>No profile found</p>
                 </div>
 
             )
         }
-
     }
 
     return(
@@ -179,8 +202,6 @@ const LoadProfile = ({props}: { props: string[] }) => {
             <p>Loading profile</p>
         </div>
     )
-
-
 }
 
 export default LoadProfile

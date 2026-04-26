@@ -5,14 +5,13 @@
 }
 
 .table-container{
-    margin-top: 2%;
     display: flex;
     justify-content: center;
-    margin-bottom: 100px;
+    margin: 2% 20px 100px;
 }
 
 .result-table, .profile-table{
-    min-width: 400px;
+    min-width: 350px;
     border: 1px solid white;
     align-content: center;
 }
